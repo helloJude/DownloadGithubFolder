@@ -11,7 +11,7 @@ function convert(urlString) {
 
     var pathArray = result.pathname.split('/')
     pathArray.shift()
-c
+
     if(pathArray.length === 2){
         pathArray.unshift("repos")
         pathArray.push("contents")
