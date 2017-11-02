@@ -1,19 +1,9 @@
-// 引入依赖
 var superagent = require('superagent');
 var cheerio = require('cheerio');
 var fs = require('fs');
 var async = require('async')
 var urlUtil = require("url");
 var queryString = require("querystring");
-
-// 查找仓库  https://api.github.com/repos/helloJude/PhoneGuard
-// 查找用户 https://api.github.com/users/helloJude
-// 仓库首页 https://api.github.com/repos/helloJude/PhoneGuard/contents
-
-//https://github.com/helloJude/PhoneGuard/tree/master/app
-//仓库下的文件夹 https://api.github.com/repos/helloJude/PhoneGuard/contents/app?ref=master
-
-
 
 function convert(urlString) {
     var result = urlUtil.parse(urlString);
@@ -44,10 +34,6 @@ function getRepositoryName(urlString) {
     return pathArray[1]
 }
 
-
-//仓库下的文件夹 https://api.github.com/repos/helloJude/PhoneGuard/contents/app/src/main?ref=master
-//https://github.com/helloJude/PhoneGuard/tree/master/app/src/main
-
 var root = process.argv[2]
 var project = getRepositoryName(root)
 superagent.get(convert(process.argv[2])).end(function (err, res) {
@@ -57,16 +43,6 @@ superagent.get(convert(process.argv[2])).end(function (err, res) {
     }
     var jsonArray = res.body
     mkdirSync(project)
-    // jsonArray.forEach(
-    //     (x) => {
-    //         if(x.type == "file" ){
-    //             writeFile(x)
-    //         }else if(x.type == "dir"){
-    //             writeFolder(x)
-    //         }
-    //     }
-    // )
-
     async.mapLimit(jsonArray, 1, function (item, callback) {
         setTimeout(function () {
             if (item.type == "file") {
@@ -107,15 +83,6 @@ function writeFolder(json) {
                 return;
             }
         })
-        // jsonArray.forEach(
-        //     (x) => {
-        //         if(x.type == "file" ){
-        //             writeFile(x)
-        //         }else if(x.type == "dir"){
-        //             writeFolder(x)
-        //         }
-        //     }
-        // )
     })
 }
 
